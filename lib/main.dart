@@ -1,26 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Model {
-  final String name;
-  final int? age;
-  final Model? model;
-  Model({this.model, required this.name, this.age});
-}
-
 void main() {
   runApp(const MyApp());
-
-// String
-// int
-// double
-// List
-// Map
-// Set
-// Object?
-
-  Map<String, dynamic> response = {};
-
-  final int age = response['age'] ?? 0;
 }
 
 class MyApp extends StatelessWidget {
@@ -30,11 +11,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Плюсики'),
     );
   }
 }
@@ -49,18 +31,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final Model model;
-
   int _counter = 0;
 
-  @override
-  void initState() {
-    model = Model(name: 'Alex');
-
-    super.initState();
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
   }
 
-  void _incrementCounter() {
+  void _incrementCounter2() {
     setState(() {
       _counter += 2;
     });
@@ -71,55 +50,33 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Center(child: Text(widget.title)), // Заголовок по центру
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _incrementCounter2,
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircleContainer(title: model.name),
-            CircleContainer(
-              title: (model.age ?? 0).toString(),
+      body: Column(
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.only(left: 16.0, top: 20.0),
+            child: Text(
+              'Нажато: ',
             ),
-            if (model.model != null)
-              CircleContainer(title: model.model?.name ?? ''),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
-          ],
-        ),
+          ),
+          Text(
+            '$_counter',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add), //Иконка "+"
       ),
-    );
-  }
-}
-
-class CircleContainer extends StatelessWidget {
-  const CircleContainer({super.key, required this.title, this.show = true});
-
-  final String title;
-  final bool show;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      height: 100,
-      child: show
-          ? Center(
-              child: Text(
-                title,
-              ),
-            )
-          : null,
     );
   }
 }
